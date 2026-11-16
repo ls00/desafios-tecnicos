@@ -5,12 +5,15 @@ Repositório para reunir desafios técnicos, cada um organizado em sua própria 
 ## Desafios
 
 - [BTG Pactual](btg-pactual/README.md): processamento e consulta de pedidos com RabbitMQ, MongoDB e API REST.
+- [Itaú Unibanco](itau-backend/README.md): API REST em memória para receber transações e calcular estatísticas.
 
 ## Estrutura
 
 ```text
 .
-└── btg-pactual/
+├── btg-pactual/
+│   └── README.md
+└── itau-backend/
     └── README.md
 ```
 
