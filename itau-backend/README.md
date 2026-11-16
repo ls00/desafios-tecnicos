@@ -4,6 +4,28 @@ Desafio de desenvolvimento e engenharia de software: criar uma API REST que rece
 
 A API deve ser desenvolvida em Java ou [Kotlin](https://kotlinlang.org/) com Spring Boot. 
 
+## Executar localmente
+
+Requisito: Java 17. O Maven Wrapper do projeto baixa e utiliza a versão necessária do Maven, sem exigir uma instalação global.
+
+No PowerShell, a partir da raiz do repositório:
+
+```powershell
+cd .\itau-backend
+.\mvnw.cmd spring-boot:run
+```
+
+No Linux ou macOS:
+
+```bash
+cd itau-backend
+./mvnw spring-boot:run
+```
+
+Também é possível iniciar pelo VS Code: abra a paleta com `Ctrl+Shift+P`, selecione **Tasks: Run Task** e depois **Run itau-backend**.
+
+A API ficará disponível em `http://127.0.0.1:8080`. Ela não possui página inicial; use as rotas abaixo.
+
 ## Restrições técnicas
 
 O projeto:
@@ -15,6 +37,30 @@ O projeto:
 - **Deve** implementar exatamente os endpoints e os formatos de requisição e resposta descritos neste documento.
 - **Não deve** utilizar banco de dados ou cache. Todos os dados devem ser armazenados em memória.
 - **Deve** aceitar e responder apenas em JSON.
+
+## Teste rápido da API
+
+Com a aplicação em execução, use o PowerShell para criar uma transação, consultar as estatísticas e limpar os dados:
+
+```powershell
+$baseUrl = "http://127.0.0.1:8080"
+$body = @{
+    valor = 123.45
+    dataHora = (Get-Date).AddSeconds(-5).ToString("o")
+} | ConvertTo-Json
+
+# Deve retornar 201 Created.
+Invoke-WebRequest -Method Post -Uri "${baseUrl}/transacao" `
+    -ContentType "application/json" -Body $body
+
+# Deve retornar as estatísticas em JSON.
+Invoke-RestMethod -Method Get -Uri "${baseUrl}/estatistica"
+
+# Deve retornar 200 OK e limpar as transações.
+Invoke-WebRequest -Method Delete -Uri "${baseUrl}/transacao"
+```
+
+Use uma data/hora ISO 8601 no passado. Para que a transação apareça nas estatísticas, ela deve estar dentro dos últimos 60 segundos.
 
 ## Endpoints da API
 
